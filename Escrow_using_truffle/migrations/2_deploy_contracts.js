@@ -1,5 +1,5 @@
 module.exports = function(deployer) {
   deployer.deploy(ConvertLib);
   deployer.autolink();
-  deployer.deploy(Escrow, '0xe484b9a8721141f8f70ca5cc36fd506a11b631e2');
+  deployer.deploy(Escrow, '0xdf700fd0413ca5772cbf5a588d3080469f2edda2');
 };
