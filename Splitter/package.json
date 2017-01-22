@@ -1,0 +1,7 @@
+{
+  "name": "splitter",
+  "license": "ISC",
+  "dependencies": {
+    "web3": "^0.18.2"
+  }
+}
