@@ -1,6 +1,6 @@
 contract('Escrow', (accounts) => {
-  const alice = accounts[0];
-  const bob = accounts[1];
+  const aliceTheBuyer = accounts[0];
+  const bobTheSeller = accounts[1];
   let contract;
 
   let balanceInEther = (account) => {
@@ -13,7 +13,7 @@ contract('Escrow', (accounts) => {
 
   it('accepts ether', (done) => {
     return web3.eth.sendTransaction({
-      from: alice,
+      from: aliceTheBuyer,
       to: contract.address,
       value: web3.toWei(1, 'ether')
     }, () => {
@@ -23,11 +23,23 @@ contract('Escrow', (accounts) => {
   });
 
   it('can be finalized by the buyer', () => {
-    const bobsInitialBalance = balanceInEther(bob);
+    const bobsInitialBalance = balanceInEther(bobTheSeller);
     return contract.paySeller({
-      from: alice,
+      from: aliceTheBuyer,
     }).then(() => {
-      assert.equal(balanceInEther(bob), bobsInitialBalance + 1)
+      assert.equal(balanceInEther(bobTheSeller), bobsInitialBalance + 1)
     });
+  });
+
+  it('cant be finalized by the seller', (done) => {
+    contract.paySeller({
+      from: bobTheSeller
+    }).catch(() => {
+      assert.ok(true);
+      done();
+    }).then(() => {
+      assert.fail();
+      done();
+    })
   });
 });
